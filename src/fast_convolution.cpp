@@ -13,41 +13,41 @@
  * @param destination Destination address. Must have available memory to store size complex numbers.
  * @return true if the convolution was computed successfully.
  */
-bool fast_circular_conv(const complex_t* x, const complex_t* y, size_t size, complex_t* destination) {
+    bool fast_circular_conv(const complex_t* x, const complex_t* y, size_t size, complex_t* destination) {
 
-    //Argument check
-    if (x == nullptr || y == nullptr || destination == nullptr) {
-        return false;
+        //Argument check
+        if (x == nullptr || y == nullptr || destination == nullptr) {
+            return false;
+        }
+
+        //Allocate transformed arrays memory
+        auto* x_fft = new complex_t[size];
+        auto* y_fft = new complex_t[size];
+        auto* result_fft = new complex_t[size];
+
+        //Transform inputs
+        if (!fft(x, size, x_fft)) {
+            return false;
+        }
+
+        if (!fft(y, size, y_fft)) {
+            return false;
+        }
+
+        //Element wise multiplication. Includes size scaling according to our FFT definition
+        for (size_t k=0; k<size; k++) {
+            result_fft[k] = x_fft[k] * y_fft[k] * (real_t) size;
+        }
+
+        //Inverse transform of the result
+        if (!ifft(result_fft, size, destination)) {
+            return false;
+        }
+
+        //Free allocated memory
+        delete[] x_fft;
+        delete[] y_fft;
+        delete[] result_fft;
+
+        return true;
     }
-
-    //Allocate transformed arrays memory
-    auto* x_fft = new complex_t[size];
-    auto* y_fft = new complex_t[size];
-    auto* result_fft = new complex_t[size];
-
-    //Transform inputs
-    if (!fft(x, size, x_fft)) {
-        return false;
-    }
-
-    if (!fft(y, size, y_fft)) {
-        return false;
-    }
-
-    //Element wise multiplication. Includes size scaling according to our FFT definition
-    for (size_t k=0; k<size; k++) {
-        result_fft[k] = x_fft[k] * y_fft[k] * (real_t) size;
-    }
-
-    //Inverse transform of the result
-    if (!ifft(result_fft, size, destination)) {
-        return false;
-    }
-
-    //Free allocated memory
-    delete[] x_fft;
-    delete[] y_fft;
-    delete[] result_fft;
-
-    return true;
-}

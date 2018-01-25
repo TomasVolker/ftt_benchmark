@@ -82,7 +82,7 @@ bool _ftt_check_arguments(const complex_t *source, size_t size, complex_t *desti
 
 /**
  * Computes the DFT of the complex array source using the Cooley-Tukey algorithm. The size must be a power of 2.
- * The used DFT definition includes dividing by size the result and no scaling factor for the IDFT.
+ * The used DFT definition has no scaling factor and includes dividing by size the result for the IDFT.
  *
  * @param source Complex array to transform
  * @param size Size of the source array. Must be a power of 2.
@@ -97,17 +97,12 @@ bool fft(const complex_t* source, size_t size, complex_t* destination) {
 
     _ftt_cooley_tukey(source, size, 1, destination, false);
 
-    //Divide all elements by the size according to the used definition of DFT
-    for(size_t k=0; k<size; k++){
-        destination[k]/=size;
-    }
-
     return true;
 }
 
 /**
  * Computes the inverse DFT of the complex array source using the Cooley-Tukey algorithm. The size must be a power of 2.
- * The used IDFT definition has no scaling factor and includes dividing by size the result for the DFT.
+ * The used IDFT definition includes dividing by size the result and no scaling factor for the DFT.
  *
  * @param source Complex array to transform
  * @param size Size of the source array.
@@ -121,6 +116,11 @@ bool ifft(const complex_t* source, size_t size, complex_t* destination) {
     }
 
     _ftt_cooley_tukey(source, size, 1, destination, true);
+
+    //Divide all elements by the size according to the used definition of DFT
+    for(size_t k=0; k<size; k++){
+        destination[k]/=size;
+    }
 
     return true;
 }

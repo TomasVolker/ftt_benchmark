@@ -14,7 +14,7 @@ complex_t test_function1(size_t i) {
             x = 1.0f;
             break;
         case 1:
-            x = 0.5f;
+            x = 0.0f;
             break;
         default:
             x = 0.0f;

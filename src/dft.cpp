@@ -43,8 +43,8 @@ bool _dft_check_arguments(const complex_t *source, size_t size, complex_t *desti
 }
 
 /**
- * Computes the DFT of the complex array source by definition. The used DFT definition includes dividing by size
- * the result and no scaling factor for the IDFT.
+ * Computes the DFT of the complex array source by definition. The used DFT has no scaling factor and includes
+ * dividing by size the result for the IDFT.
  *
  * @param source Complex array to transform
  * @param size Size of the source array.
@@ -59,17 +59,12 @@ bool dft(const complex_t* source, size_t size, complex_t* destination) {
 
     _dft(source, size, destination, false);
 
-    //Divide all elements by the size according to the used definition of DFT
-    for(size_t k=0; k<size; k++){
-        destination[k]/=size;
-    }
-
     return true;
 }
 
 /**
- * Computes the IDFT of the complex array source by definition. The used IDFT has no scaling factor and includes
- * dividing by size the result for the DFT.
+ * Computes the IDFT of the complex array source by definition. The used IDFT definition includes dividing by size
+ * the result and no scaling factor for the DFT.
  *
  * @param source Complex array to transform
  * @param size Size of the source array.
@@ -83,6 +78,11 @@ bool idft(const complex_t* source, size_t size, complex_t* destination) {
     }
 
     _dft(source, size, destination, true);
+
+    //Divide all elements by the size according to the used definition of DFT
+    for(size_t k=0; k<size; k++){
+        destination[k]/=size;
+    }
 
     return true;
 }
