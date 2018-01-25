@@ -42,7 +42,6 @@ void _ftt_cooley_tukey(const complex_t *source, size_t size, size_t stride, comp
         );
 
         //Butterfly formula
-
         even = destination[k];
         odd  = destination[k + half_size];
 

@@ -47,7 +47,6 @@ double measure_fft(complex_t* source, size_t size, complex_t* destination) {
 
 void fft_benchmark() {
 
-    //size = 2^15 -> 140 secs
     size_t tests = 16;
     size_t size = 1;
 
@@ -61,13 +60,11 @@ void fft_benchmark() {
 
         auto destination = new complex_t[size];
 
-
         fft_runtimes[i] = measure_fft(source, size, destination);
         printf("FFT: size: 2^%d = %d \t elapsed time: %.8f seconds\n", i, size, fft_runtimes[i]);
 
         dft_runtimes[i] = measure_dft(source, size, destination);
         printf("DFT: size: 2^%d = %d \t elapsed time: %.8f seconds\n\n", i, size, dft_runtimes[i]);
-
 
         delete[] source;
         delete[] destination;
@@ -116,7 +113,6 @@ double measure_fast_conv(complex_t* source1, complex_t* source2, size_t size, co
 
 void convolution_benchmark() {
 
-    //size = 2^15 -> 140 secs
     size_t tests = 16;
     size_t size = 1;
 
@@ -133,13 +129,11 @@ void convolution_benchmark() {
 
         auto destination = new complex_t[size];
 
-
         fast_conv_runtimes[i] = measure_fast_conv(source1, source2, size, destination);
         printf("Fast Conv: size: 2^%d =\t %d \t elapsed time: %.8f seconds\n", i, size, fast_conv_runtimes[i]);
 
         conv_runtimes[i] = measure_conv(source1, source2, size, destination);
         printf("Conv:      size: 2^%d =\t %d \t elapsed time: %.8f seconds\n\n", i, size, conv_runtimes[i]);
-
 
         delete[] source1;
         delete[] source2;
