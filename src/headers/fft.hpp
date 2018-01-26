@@ -3,7 +3,7 @@
 
 #include "definitions.hpp"
 
-bool fft(const complex_t* source, size_t size, complex_t* destination);
-bool ifft(const complex_t* source, size_t size, complex_t* destination);
+void fft(const complex_t* source, size_t size, complex_t* destination);
+void ifft(const complex_t* source, size_t size, complex_t* destination);
 
 #endif //FTT_BENCHMARK_FFT_HPP

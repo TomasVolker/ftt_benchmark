@@ -1,4 +1,5 @@
 #include "headers/definitions.hpp"
+#include <exception>
 
 /**
  * Implementation of the Cooley-Tukey algorithm for computing the DFT of a complex array with a size of a power of 2.
@@ -61,10 +62,13 @@ void _ftt_cooley_tukey(const complex_t *source, size_t size, size_t stride, comp
  * @param destination Destination address. Must have available memory to store size complex numbers.
  * @return true if source and destination are non null and size is a power of 2
  */
-bool _ftt_check_arguments(const complex_t *source, size_t size, complex_t *destination) {
+void _ftt_check_arguments(const complex_t* source, size_t size, complex_t* destination) {
 
-    if(source == nullptr || destination == nullptr)
-        return false;
+    if (source == nullptr)
+        throw std::invalid_argument("source null");
+
+    if (destination == nullptr)
+        throw std::invalid_argument("destination null");
 
     size_t value = size;
 
@@ -72,12 +76,11 @@ bool _ftt_check_arguments(const complex_t *source, size_t size, complex_t *desti
     while (value!=1){
 
         if(value%2!=0)
-            return false;
+            throw std::invalid_argument("size not power of two");
 
         value/=2;
     }
 
-    return true;
 }
 
 /**
@@ -89,15 +92,12 @@ bool _ftt_check_arguments(const complex_t *source, size_t size, complex_t *desti
  * @param destination Destination address. Must have available memory to store size complex numbers.
  * @return true if the FFT was computed successfully.
  */
-bool fft(const complex_t* source, size_t size, complex_t* destination) {
+void fft(const complex_t* source, size_t size, complex_t* destination) {
 
-    if (!_ftt_check_arguments(source, size, destination)) {
-        return false;
-    }
+    _ftt_check_arguments(source, size, destination);
 
     _ftt_cooley_tukey(source, size, 1, destination, false);
 
-    return true;
 }
 
 /**
@@ -109,11 +109,9 @@ bool fft(const complex_t* source, size_t size, complex_t* destination) {
  * @param destination Destination address. Must have available memory to store size complex numbers.
  * @return true if the IFFT was computed successfully.
  */
-bool ifft(const complex_t* source, size_t size, complex_t* destination) {
+void ifft(const complex_t* source, size_t size, complex_t* destination) {
 
-    if(!_ftt_check_arguments(source, size, destination)) {
-        return false;
-    }
+    _ftt_check_arguments(source, size, destination);
 
     _ftt_cooley_tukey(source, size, 1, destination, true);
 
@@ -122,5 +120,4 @@ bool ifft(const complex_t* source, size_t size, complex_t* destination) {
         destination[k]/=size;
     }
 
-    return true;
 }
