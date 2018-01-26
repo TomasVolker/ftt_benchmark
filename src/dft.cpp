@@ -37,8 +37,13 @@ void _dft(const complex_t *source, size_t size, complex_t *destination, bool inv
  * @param destination Destination address. Must have available memory to store size complex numbers.
  * @return true if source and destination are non null.
  */
-bool _dft_check_arguments(const complex_t *source, size_t size, complex_t *destination) {
-    return source != nullptr && destination != nullptr;
+void _dft_check_arguments(const complex_t *source, size_t size, complex_t *destination) {
+
+    if (source == nullptr)
+        throw std::invalid_argument("source null");
+
+    if (destination == nullptr)
+        throw std::invalid_argument("destination null");
 
 }
 
@@ -51,15 +56,12 @@ bool _dft_check_arguments(const complex_t *source, size_t size, complex_t *desti
  * @param destination Destination address. Must have available memory to store size complex numbers.
  * @return true if the DFT was computed successfully.
  */
-bool dft(const complex_t* source, size_t size, complex_t* destination) {
+void dft(const complex_t* source, size_t size, complex_t* destination) {
 
-    if (!_dft_check_arguments(source, size, destination)) {
-        return false;
-    }
+    _dft_check_arguments(source, size, destination);
 
     _dft(source, size, destination, false);
 
-    return true;
 }
 
 /**
@@ -71,18 +73,15 @@ bool dft(const complex_t* source, size_t size, complex_t* destination) {
  * @param destination Destination address. Must have available memory to store size complex numbers.
  * @return true if the IDFT was computed successfully.
  */
-bool idft(const complex_t* source, size_t size, complex_t* destination) {
+void idft(const complex_t* source, size_t size, complex_t* destination) {
 
-    if(!_dft_check_arguments(source, size, destination)) {
-        return false;
-    }
+    _dft_check_arguments(source, size, destination);
 
     _dft(source, size, destination, true);
 
-    //Divide all elements by the size according to the used definition of DFT
+    //Divide all elements by the size according to the used definition of IDFT
     for(size_t k=0; k<size; k++){
         destination[k]/=size;
     }
 
-    return true;
 }

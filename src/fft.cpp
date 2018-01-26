@@ -115,7 +115,7 @@ void ifft(const complex_t* source, size_t size, complex_t* destination) {
 
     _ftt_cooley_tukey(source, size, 1, destination, true);
 
-    //Divide all elements by the size according to the used definition of DFT
+    //Divide all elements by the size according to the used definition of IDFT
     for(size_t k=0; k<size; k++){
         destination[k]/=size;
     }
